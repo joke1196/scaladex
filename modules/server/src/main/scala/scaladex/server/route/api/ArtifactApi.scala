@@ -2,10 +2,12 @@ package scaladex.server.route.api
 
 import scala.concurrent.ExecutionContext
 
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import endpoints4s.akkahttp.server
 import scaladex.core.api.artifact.ArtifactEndpoints
+import scaladex.core.api.artifact.ArtifactMetadataParams
 import scaladex.core.api.artifact.ArtifactParams
 import scaladex.core.api.artifact.ArtifactResponse
 import scaladex.core.model.Language
@@ -41,7 +43,8 @@ class ArtifactApi(database: WebDatabase)(
                 items = distinctArtifacts
               )
             }
-      }
+      } ~
+        artifactMetadata.implementedByAsync { case ArtifactMetadataParams(_, _) => ??? }
     }
 }
 
